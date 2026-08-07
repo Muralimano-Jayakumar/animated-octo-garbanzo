@@ -75,11 +75,12 @@ make app-run
 In another terminal, verify the service:
 
 ```bash
+open http://127.0.0.1:5000
 curl http://127.0.0.1:5000/healthz
 curl http://127.0.0.1:5000/api/v1/accounts
 ```
 
-See [Banking API](docs/banking-api.md) for endpoints and example transfers. The current in-memory balances reset whenever the process restarts.
+The root URL opens a responsive monochrome banking dashboard with live balances and transfers. See [Banking API](docs/banking-api.md) for endpoints and command-line examples. The current in-memory balances reset whenever the process restarts.
 
 ## License
 

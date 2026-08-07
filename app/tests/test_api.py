@@ -7,6 +7,19 @@ from muma_bank.domain import Account, InvalidTransferError
 from muma_bank.repository import AccountRepository
 
 
+def test_dashboard_renders(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"Muma Bank" in response.data
+    assert b"Your money" in response.data
+    assert b"transfer-form" in response.data
+
+
+def test_dashboard_assets_are_available(client):
+    assert client.get("/static/styles.css").status_code == 200
+    assert client.get("/static/app.js").status_code == 200
+
+
 def test_health_and_readiness(client):
     assert client.get("/healthz").get_json() == {"service": "muma-bank", "status": "ok"}
     assert client.get("/readyz").get_json() == {

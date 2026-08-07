@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f5f3">
+    <meta name="description" content="Muma Bank — a calm, modern banking demonstration.">
+    <title>Muma Bank — Move with clarity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Muma Bank home">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>Muma</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#accounts">Accounts</a>
+        <a href="#transfer">Transfer</a>
+        <span class="system-pill"><span class="status-dot"></span> Systems normal</span>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow reveal">Banking, distilled.</p>
+        <h1 id="hero-title" class="reveal reveal-delay-1">
+          Your money.<br><span>In clear view.</span>
+        </h1>
+        <p class="hero-copy reveal reveal-delay-2">
+          A focused way to see balances and move money. No noise. No hidden steps.
+        </p>
+        <a class="primary-action reveal reveal-delay-3" href="#accounts">
+          View your accounts <span aria-hidden="true">↓</span>
+        </a>
+        <div class="hero-orbit" aria-hidden="true">
+          <div class="orbit-ring orbit-ring-one"></div>
+          <div class="orbit-ring orbit-ring-two"></div>
+          <div class="orbit-core">₹</div>
+        </div>
+      </section>
+
+      <section id="accounts" class="section accounts-section" aria-labelledby="accounts-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Portfolio</p>
+            <h2 id="accounts-title">Everything you hold.</h2>
+          </div>
+          <div class="total-balance" aria-live="polite">
+            <span>Total balance</span>
+            <strong id="total-balance">—</strong>
+          </div>
+        </div>
+
+        <div id="account-grid" class="account-grid" aria-live="polite" aria-busy="true">
+          <div class="account-skeleton"></div>
+          <div class="account-skeleton"></div>
+          <div class="account-skeleton"></div>
+        </div>
+      </section>
+
+      <section id="transfer" class="section transfer-section" aria-labelledby="transfer-title">
+        <div class="transfer-intro">
+          <p class="eyebrow">Move money</p>
+          <h2 id="transfer-title">Fast by design.<br>Clear by default.</h2>
+          <p>Choose two accounts, enter an amount, and review the result instantly.</p>
+          <div class="transfer-note">
+            <span class="note-icon" aria-hidden="true">✓</span>
+            <span>Transfers use decimal-safe arithmetic and complete atomically.</span>
+          </div>
+        </div>
+
+        <form id="transfer-form" class="transfer-card">
+          <div class="form-heading">
+            <span>New transfer</span>
+            <span class="step-label">One step</span>
+          </div>
+
+          <label for="source-account">From</label>
+          <select id="source-account" name="source_account_id" required>
+            <option value="">Select an account</option>
+          </select>
+
+          <button id="swap-accounts" class="swap-button" type="button" aria-label="Swap accounts">
+            <span aria-hidden="true">⇅</span>
+          </button>
+
+          <label for="destination-account">To</label>
+          <select id="destination-account" name="destination_account_id" required>
+            <option value="">Select an account</option>
+          </select>
+
+          <label for="amount">Amount</label>
+          <div class="amount-field">
+            <span aria-hidden="true">₹</span>
+            <input id="amount" name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00" required>
+          </div>
+
+          <button class="submit-button" type="submit">
+            <span>Complete transfer</span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="principles" aria-label="Banking principles">
+        <article>
+          <span class="principle-number">01</span>
+          <h3>Immediate</h3>
+          <p>Balances update the moment a transfer completes.</p>
+        </article>
+        <article>
+          <span class="principle-number">02</span>
+          <h3>Transparent</h3>
+          <p>Every action returns a request ID for clear tracing.</p>
+        </article>
+        <article>
+          <span class="principle-number">03</span>
+          <h3>Purposeful</h3>
+          <p>Only the information needed to make a decision.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="/">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>Muma Bank</span>
+      </a>
+      <p>A Kubernetes learning platform. Demo data resets when the service restarts.</p>
+      <p>© 2026 Muma</p>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-hidden="true">
+      <span class="toast-icon" aria-hidden="true">✓</span>
+      <div>
+        <strong>Transfer complete</strong>
+        <span id="toast-message"></span>
+      </div>
+    </div>
+  </body>
+</html>

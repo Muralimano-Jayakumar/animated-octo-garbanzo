@@ -12,6 +12,8 @@ make app-run
 
 The server listens on `http://127.0.0.1:5000` for local development only.
 
+Open `http://127.0.0.1:5000` in a browser for the responsive banking dashboard. It reads balances from the same API and submits transfers without a page reload.
+
 ## Health endpoints
 
 ```bash

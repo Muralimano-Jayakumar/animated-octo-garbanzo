@@ -6,7 +6,7 @@ from decimal import Decimal, InvalidOperation
 from typing import cast
 from uuid import uuid4
 
-from flask import Blueprint, current_app, jsonify, request
+from flask import Blueprint, current_app, jsonify, render_template, request
 
 from muma_bank.domain import InvalidTransferError
 from muma_bank.repository import AccountRepository
@@ -16,6 +16,12 @@ api = Blueprint("api", __name__)
 
 def _repository() -> AccountRepository:
     return cast(AccountRepository, current_app.extensions["account_repository"])
+
+
+@api.get("/")
+def index():
+    """Render the banking dashboard."""
+    return render_template("index.html")
 
 
 @api.before_app_request
