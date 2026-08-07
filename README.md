@@ -43,6 +43,8 @@ make preflight
 
 The planned toolchain includes Git, GitHub CLI, Colima, Docker, kubectl, kind, Terraform, Helm, Gitleaks, ShellCheck, Hadolint, and Trivy.
 
+See [Local development environment](docs/local-development.md) for reproducible Homebrew installation, validation commands, and runtime safety boundaries.
+
 ## Local runtime recommendation
 
 For a development machine with at least 16 GB of memory, a practical starting point for Colima is 4 CPUs, 8 GB of memory, and 60 GB of disk. Reduce this to 2 CPUs and 4–6 GB on an 8 GB machine, or increase it when running observability components alongside the cluster. Colima is not started by the bootstrap phase.
@@ -58,6 +60,7 @@ Never commit credentials, local environment files, Terraform state, private keys
 ```bash
 make help
 make preflight
+make tool-versions
 make check
 ```
 
