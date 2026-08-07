@@ -64,6 +64,23 @@ make tool-versions
 make check
 ```
 
+## Run the banking API locally
+
+```bash
+make app-install
+make app-test
+make app-run
+```
+
+In another terminal, verify the service:
+
+```bash
+curl http://127.0.0.1:5000/healthz
+curl http://127.0.0.1:5000/api/v1/accounts
+```
+
+See [Banking API](docs/banking-api.md) for endpoints and example transfers. The current in-memory balances reset whenever the process restarts.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
