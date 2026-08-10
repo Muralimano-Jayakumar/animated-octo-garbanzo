@@ -6,13 +6,17 @@ Terraform manages the initial Muma Bank workload in the existing `kind-muma-bank
 
 - namespace `muma-bank` with the restricted Pod Security Standard;
 - ConfigMap containing non-secret Gunicorn configuration;
-- single-replica Deployment using `muma-bank:dev` with local image pulls disabled;
+- application Deployment using `muma-bank:dev` with local image pulls disabled;
 - non-root, read-only, capability-dropped container security context;
 - startup, readiness, and liveness HTTP probes;
 - CPU and memory requests and limits;
 - internal ClusterIP Service on port 80.
+- generated PostgreSQL credentials stored in Kubernetes Secrets;
+- headless PostgreSQL Service and single-replica StatefulSet;
+- 1 GiB `ReadWriteOnce` persistent volume claim using kind's `standard` StorageClass;
+- database probes, resource controls, and a restricted non-root security context.
 
-The replica count is deliberately restricted to one while account data remains in memory. PostgreSQL persistence is required before horizontal scaling.
+Terraform state contains the generated password and must remain local and protected. Never commit state, plan files, variable files, or decoded Secret values.
 
 ## Prerequisites
 
@@ -46,11 +50,24 @@ Review every create, update, and delete action before applying. Local state and 
 ```bash
 terraform -chdir=terraform apply
 kubectl --namespace muma-bank rollout status deployment/muma-bank --timeout=180s
-kubectl --namespace muma-bank get all
+kubectl --namespace muma-bank rollout status statefulset/muma-bank-postgres --timeout=180s
+kubectl --namespace muma-bank get pods,services,pvc
 terraform -chdir=terraform plan
 ```
 
 The second plan should report no changes.
+
+## Verify persistence
+
+Submit a transfer through the application, record the resulting balance, and recreate only the database pod:
+
+```bash
+kubectl --namespace muma-bank delete pod muma-bank-postgres-0
+kubectl --namespace muma-bank rollout status statefulset/muma-bank-postgres --timeout=180s
+kubectl --namespace muma-bank get pvc data-muma-bank-postgres-0
+```
+
+Query the account again through the application. The changed balance must remain and the claim must remain `Bound`. Pod recreation is safe for this test; deleting the claim or cluster is not part of it.
 
 ## Access locally
 

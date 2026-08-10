@@ -9,13 +9,13 @@ from uuid import uuid4
 from flask import Blueprint, current_app, jsonify, render_template, request
 
 from muma_bank.domain import InvalidTransferError
-from muma_bank.repository import AccountRepository
+from muma_bank.repository import AccountStore
 
 api = Blueprint("api", __name__)
 
 
-def _repository() -> AccountRepository:
-    return cast(AccountRepository, current_app.extensions["account_repository"])
+def _repository() -> AccountStore:
+    return cast(AccountStore, current_app.extensions["account_repository"])
 
 
 @api.get("/")

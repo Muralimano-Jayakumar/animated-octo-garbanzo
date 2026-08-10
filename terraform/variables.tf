@@ -28,12 +28,24 @@ variable "image" {
 }
 
 variable "replicas" {
-  description = "Application replica count; keep at one until persistent storage is implemented."
+  description = "Application replica count."
   type        = number
   default     = 1
 
   validation {
-    condition     = var.replicas == 1
-    error_message = "The in-memory application must use exactly one replica until PostgreSQL is implemented."
+    condition     = var.replicas >= 1 && var.replicas <= 3
+    error_message = "The local application replica count must be between one and three."
   }
+}
+
+variable "postgres_image" {
+  description = "PostgreSQL image used by the local StatefulSet."
+  type        = string
+  default     = "postgres:17.6-alpine"
+}
+
+variable "postgres_storage" {
+  description = "Persistent storage requested by PostgreSQL."
+  type        = string
+  default     = "1Gi"
 }
