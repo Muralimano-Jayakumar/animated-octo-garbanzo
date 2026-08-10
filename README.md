@@ -94,6 +94,17 @@ make container-smoke
 
 Open `http://127.0.0.1:8080`. Follow the [container workflow](docs/container.md) to inspect the non-root process and stop both the application container and Colima cleanly.
 
+## Create the local Kubernetes cluster
+
+```bash
+colima start --cpu 4 --memory 8 --disk 60
+make cluster-create
+make cluster-validate
+make cluster-load-image
+```
+
+The [kind cluster guide](docs/kind-cluster.md) documents the three-node topology, local ports, image loading, inspection, safe shutdown, and guarded deletion. This phase loads the image but does not deploy the application.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).

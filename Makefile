@@ -6,7 +6,7 @@ IMAGE ?= muma-bank:dev
 CONTAINER ?= muma-bank-local
 APP_PORT ?= 8080
 
-.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke check
+.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete check
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*## "; printf "Available targets:\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -46,6 +46,18 @@ container-remove: ## Remove the stopped local application container
 
 container-smoke: ## Exercise container dashboard, health, accounts, and transfer paths
 	@APP_URL=http://127.0.0.1:$(APP_PORT) ./scripts/container-smoke.sh
+
+cluster-create: ## Create the local three-node kind cluster
+	@./scripts/cluster-create.sh
+
+cluster-validate: ## Validate kind node and system-pod readiness
+	@./scripts/cluster-validate.sh
+
+cluster-load-image: ## Load the application image onto every kind node
+	@IMAGE=$(IMAGE) ./scripts/cluster-load-image.sh
+
+cluster-delete: ## Delete only the named cluster with explicit confirmation
+	@CONFIRM_DELETE=$(CONFIRM_DELETE) ./scripts/cluster-delete.sh
 
 check: preflight ## Run safe repository validation
 	@git diff --check
