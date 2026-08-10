@@ -1,0 +1,10 @@
+**
+
+!Dockerfile
+!pyproject.toml
+!README.md
+!LICENSE
+!app/
+!app/gunicorn.conf.py
+!app/muma_bank/
+!app/muma_bank/**

@@ -27,6 +27,9 @@ package-dir = {"" = "app"}
 [tool.setuptools.packages.find]
 where = ["app"]
 
+[tool.setuptools.package-data]
+muma_bank = ["templates/*.html", "static/*.css", "static/*.js"]
+
 [tool.pytest.ini_options]
 addopts = "--strict-markers --cov=muma_bank --cov-report=term-missing --cov-fail-under=90"
 testpaths = ["app/tests"]
