@@ -105,6 +105,18 @@ make cluster-load-image
 
 The [kind cluster guide](docs/kind-cluster.md) documents the three-node topology, local ports, image loading, inspection, safe shutdown, and guarded deletion. This phase loads the image but does not deploy the application.
 
+## Manage the application with Terraform
+
+```bash
+colima start
+make cluster-validate
+make terraform-init
+make terraform-validate
+make terraform-plan
+```
+
+The [Terraform Kubernetes guide](docs/terraform-kubernetes.md) documents the managed namespace, secured Deployment, internal Service, plan review, apply validation, local access, and safe shutdown workflow.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).

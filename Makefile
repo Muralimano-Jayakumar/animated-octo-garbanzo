@@ -6,7 +6,7 @@ IMAGE ?= muma-bank:dev
 CONTAINER ?= muma-bank-local
 APP_PORT ?= 8080
 
-.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete check
+.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete terraform-fmt terraform-init terraform-validate terraform-plan check
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*## "; printf "Available targets:\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -58,6 +58,18 @@ cluster-load-image: ## Load the application image onto every kind node
 
 cluster-delete: ## Delete only the named cluster with explicit confirmation
 	@CONFIRM_DELETE=$(CONFIRM_DELETE) ./scripts/cluster-delete.sh
+
+terraform-fmt: ## Format Terraform configuration
+	@terraform -chdir=terraform fmt -recursive
+
+terraform-init: ## Initialize the local Terraform working directory
+	@terraform -chdir=terraform init
+
+terraform-validate: ## Validate initialized Terraform configuration
+	@terraform -chdir=terraform validate
+
+terraform-plan: ## Show the Kubernetes resource plan without applying it
+	@terraform -chdir=terraform plan
 
 check: preflight ## Run safe repository validation
 	@git diff --check
