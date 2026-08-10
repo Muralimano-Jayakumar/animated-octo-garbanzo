@@ -82,6 +82,18 @@ curl http://127.0.0.1:5000/api/v1/accounts
 
 The root URL opens a responsive monochrome banking dashboard with live balances and transfers. See [Banking API](docs/banking-api.md) for endpoints and command-line examples. The current in-memory balances reset whenever the process restarts.
 
+## Run the containerized application
+
+```bash
+colima start --cpu 4 --memory 8 --disk 60
+make container-build
+make container-scan
+make container-run
+make container-smoke
+```
+
+Open `http://127.0.0.1:8080`. Follow the [container workflow](docs/container.md) to inspect the non-root process and stop both the application container and Colima cleanly.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
