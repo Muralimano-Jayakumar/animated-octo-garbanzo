@@ -119,6 +119,18 @@ The [Terraform Kubernetes guide](docs/terraform-kubernetes.md) documents the man
 
 The same Terraform stack now provisions a secured PostgreSQL StatefulSet, generated Kubernetes Secrets, a headless Service, and a 1 GiB persistent claim. The Flask repository automatically switches to PostgreSQL inside Kubernetes so transfers survive database pod recreation.
 
+## Access through Kubernetes Ingress
+
+```bash
+colima start --cpu 4 --memory 8 --disk 60
+make cluster-validate
+make ingress-install
+terraform -chdir=terraform apply
+make ingress-validate
+```
+
+Open `http://muma-bank.localhost:8081`. The hostname resolves to loopback without an `/etc/hosts` change, and PostgreSQL remains internal. See the [ingress and local-networking guide](docs/ingress-local-networking.md) for the traffic path and troubleshooting commands.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).

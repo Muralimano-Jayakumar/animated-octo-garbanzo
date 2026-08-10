@@ -10,7 +10,7 @@ The local Kubernetes environment runs inside Colima and uses kind to create one 
 | `muma-bank-worker` | worker | `workload-tier=application` |
 | `muma-bank-worker2` | worker | `workload-tier=data` |
 
-The Kubernetes API listens only on `127.0.0.1:6443`. Future ingress traffic is reserved on loopback ports `8081` and `8443`.
+The Kubernetes API listens only on `127.0.0.1:6443`. Ingress traffic uses loopback ports `8081` and `8443`, so it is not exposed on the Mac's external interfaces.
 
 The cluster pins Kubernetes v1.36.1 to the node digest published with kind v0.32.0.
 
@@ -35,6 +35,14 @@ make cluster-load-image
 ```
 
 Loading an image does not deploy a Pod or other Kubernetes workload.
+
+## Install the ingress add-on
+
+```bash
+make ingress-install
+```
+
+The script installs the pinned ingress-nginx kind manifest and waits for the controller. Application routing remains managed separately by Terraform. See [Ingress and local networking](ingress-local-networking.md).
 
 ## Inspect resources
 

@@ -27,3 +27,8 @@ output "port_forward_command" {
   description = "Command that exposes the application on host loopback port 8080."
   value       = "kubectl --namespace ${var.namespace} port-forward service/${kubernetes_service_v1.application.metadata[0].name} 8080:80"
 }
+
+output "ingress_url" {
+  description = "Loopback-only URL exposed through ingress-nginx and kind."
+  value       = "http://${var.ingress_host}:8081"
+}

@@ -360,3 +360,35 @@ resource "kubernetes_service_v1" "application" {
     }
   }
 }
+
+resource "kubernetes_ingress_v1" "application" {
+  metadata {
+    name      = local.application_name
+    namespace = kubernetes_namespace_v1.application.metadata[0].name
+    labels    = local.common_labels
+  }
+
+  spec {
+    ingress_class_name = "nginx"
+
+    rule {
+      host = var.ingress_host
+
+      http {
+        path {
+          path      = "/"
+          path_type = "Prefix"
+
+          backend {
+            service {
+              name = kubernetes_service_v1.application.metadata[0].name
+              port {
+                name = "http"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
