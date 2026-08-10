@@ -3,6 +3,7 @@
 from decimal import Decimal
 
 import pytest
+from muma_bank import create_app
 from muma_bank.domain import Account, InvalidTransferError
 from muma_bank.repository import AccountRepository
 
@@ -18,6 +19,17 @@ def test_dashboard_renders(client):
 def test_dashboard_assets_are_available(client):
     assert client.get("/static/styles.css").status_code == 200
     assert client.get("/static/app.js").status_code == 200
+
+
+def test_readiness_reports_unavailable_repository():
+    class UnavailableRepository(AccountRepository):
+        def is_ready(self) -> bool:
+            return False
+
+    app = create_app({"TESTING": True}, repository=UnavailableRepository.with_demo_data())
+    response = app.test_client().get("/readyz")
+    assert response.status_code == 503
+    assert response.get_json()["status"] == "not_ready"
 
 
 def test_health_and_readiness(client):

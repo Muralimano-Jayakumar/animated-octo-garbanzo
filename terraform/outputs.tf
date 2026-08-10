@@ -13,6 +13,16 @@ output "service_name" {
   value       = kubernetes_service_v1.application.metadata[0].name
 }
 
+output "database_service_name" {
+  description = "Headless Service used to discover PostgreSQL."
+  value       = kubernetes_service_v1.database.metadata[0].name
+}
+
+output "database_persistent_volume_claim" {
+  description = "PersistentVolumeClaim created for the PostgreSQL replica."
+  value       = "data-${kubernetes_stateful_set_v1.database.metadata[0].name}-0"
+}
+
 output "port_forward_command" {
   description = "Command that exposes the application on host loopback port 8080."
   value       = "kubectl --namespace ${var.namespace} port-forward service/${kubernetes_service_v1.application.metadata[0].name} 8080:80"

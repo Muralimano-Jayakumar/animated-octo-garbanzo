@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 from threading import RLock
+from typing import Protocol
 
 from muma_bank.domain import (
     Account,
@@ -11,6 +12,20 @@ from muma_bank.domain import (
     InsufficientFundsError,
     InvalidTransferError,
 )
+
+
+class AccountStore(Protocol):
+    """Repository contract used by HTTP routes."""
+
+    def is_ready(self) -> bool: ...
+
+    def list_accounts(self) -> list[Account]: ...
+
+    def get_account(self, account_id: str) -> Account: ...
+
+    def transfer(
+        self, source_id: str, destination_id: str, amount: Decimal
+    ) -> dict[str, object]: ...
 
 
 class AccountRepository:

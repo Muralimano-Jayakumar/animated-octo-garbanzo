@@ -2,19 +2,21 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Mapping
 from typing import Any
 
 from flask import Flask
 
+from muma_bank.database import PostgresAccountRepository
 from muma_bank.errors import register_error_handlers
-from muma_bank.repository import AccountRepository
+from muma_bank.repository import AccountRepository, AccountStore
 from muma_bank.routes import api
 
 
 def create_app(
     config: Mapping[str, Any] | None = None,
-    repository: AccountRepository | None = None,
+    repository: AccountStore | None = None,
 ) -> Flask:
     """Create and configure the Flask application."""
     app = Flask(__name__)
@@ -26,7 +28,16 @@ def create_app(
     if config:
         app.config.from_mapping(config)
 
-    app.extensions["account_repository"] = repository or AccountRepository.with_demo_data()
+    if repository is None:
+        database_url = os.getenv("DATABASE_URL")
+        if database_url:
+            postgres_repository = PostgresAccountRepository(database_url)
+            postgres_repository.initialize()
+            repository = postgres_repository
+        else:
+            repository = AccountRepository.with_demo_data()
+
+    app.extensions["account_repository"] = repository
     app.register_blueprint(api)
     register_error_handlers(app)
     return app

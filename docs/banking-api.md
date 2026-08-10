@@ -1,6 +1,6 @@
 # Banking API
 
-The Flask service is a deliberately small banking demo for container and Kubernetes learning. It keeps data in memory during this phase; PostgreSQL persistence is planned separately.
+The Flask service is a deliberately small banking demo for container and Kubernetes learning. It uses the in-memory repository for local development and tests, and automatically uses PostgreSQL when `DATABASE_URL` is present.
 
 ## Start locally
 
@@ -21,7 +21,9 @@ curl http://127.0.0.1:5000/healthz
 curl http://127.0.0.1:5000/readyz
 ```
 
-`/healthz` reports process health. `/readyz` confirms the account repository is ready. These paths are intended for future Kubernetes probes.
+`/healthz` reports process health. `/readyz` confirms the selected account repository is ready, including a live database query when PostgreSQL is configured. Kubernetes uses both paths as probes.
+
+The PostgreSQL repository creates the account schema on startup, seeds demo accounts only when the table is empty, locks both account rows during transfers, and commits each debit and credit in one transaction.
 
 ## Accounts
 
