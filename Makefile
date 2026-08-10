@@ -6,7 +6,7 @@ IMAGE ?= muma-bank:dev
 CONTAINER ?= muma-bank-local
 APP_PORT ?= 8080
 
-.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete terraform-fmt terraform-init terraform-validate terraform-plan check
+.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete ingress-install ingress-validate terraform-fmt terraform-init terraform-validate terraform-plan check
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*## "; printf "Available targets:\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -58,6 +58,12 @@ cluster-load-image: ## Load the application image onto every kind node
 
 cluster-delete: ## Delete only the named cluster with explicit confirmation
 	@CONFIRM_DELETE=$(CONFIRM_DELETE) ./scripts/cluster-delete.sh
+
+ingress-install: ## Install or reconcile the pinned ingress-nginx cluster add-on
+	@./scripts/ingress-install.sh
+
+ingress-validate: ## Validate ingress controller readiness and local HTTP routing
+	@./scripts/ingress-validate.sh
 
 terraform-fmt: ## Format Terraform configuration
 	@terraform -chdir=terraform fmt -recursive

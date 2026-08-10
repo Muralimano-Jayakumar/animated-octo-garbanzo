@@ -49,3 +49,14 @@ variable "postgres_storage" {
   type        = string
   default     = "1Gi"
 }
+
+variable "ingress_host" {
+  description = "Loopback-resolving hostname routed by the local Ingress."
+  type        = string
+  default     = "muma-bank.localhost"
+
+  validation {
+    condition     = can(regex("^[a-z0-9]([-.a-z0-9]*[a-z0-9])?$", var.ingress_host))
+    error_message = "The ingress host must be a lowercase DNS hostname."
+  }
+}
