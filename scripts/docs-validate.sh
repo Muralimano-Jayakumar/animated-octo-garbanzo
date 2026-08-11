@@ -12,7 +12,7 @@ import re
 import sys
 
 root = Path.cwd()
-documents = [root / "README.md", *sorted((root / "docs").glob("*.md"))]
+documents = [*sorted(root.glob("*.md")), *sorted((root / "docs").rglob("*.md"))]
 required = {
     root / "docs" / "README.md",
     root / "docs" / "architecture.md",
@@ -20,6 +20,9 @@ required = {
     root / "docs" / "operations-runbook.md",
     root / "docs" / "disaster-recovery.md",
     root / "docs" / "portfolio-evidence.md",
+    root / "docs" / "release-process.md",
+    root / "docs" / "releases" / "v1.0.0.md",
+    root / "docs" / "roadmap.md",
 }
 errors: list[str] = []
 

@@ -28,3 +28,9 @@ Use this index as the entry point for the Muma Bank Kubernetes platform.
 ## Portfolio
 
 - [Engineering evidence](portfolio-evidence.md)
+- [Project status and roadmap](roadmap.md)
+
+## Releases
+
+- [Release process](release-process.md)
+- [v1.0.0 release notes](releases/v1.0.0.md)

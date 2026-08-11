@@ -80,6 +80,9 @@ jobs:
       - name: Validate documentation
         run: make docs-validate
 
+      - name: Validate release metadata
+        run: make release-validate
+
   secrets:
     name: Secret scanning
     runs-on: ubuntu-latest
