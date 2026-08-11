@@ -164,6 +164,16 @@ CONFIRM_DELETE=muma-bank-labs make troubleshooting-cleanup
 
 Four isolated labs cover image availability, readiness probes, DNS resolution, and persistent storage. The [troubleshooting runbook](docs/troubleshooting-labs.md) connects each symptom to evidence, root cause, recovery, and prevention.
 
+## Documentation map
+
+The [documentation index](docs/README.md) is the starting point for design, deployment, and operational material. Key references include:
+
+- [platform architecture](docs/architecture.md) and [architecture decisions](docs/architecture-decisions.md)
+- [operations runbook](docs/operations-runbook.md) and [disaster recovery](docs/disaster-recovery.md)
+- [portfolio evidence](docs/portfolio-evidence.md), which maps engineering practices to repository artifacts
+
+Run `make docs-validate` to verify the required document set and all repository-local Markdown links.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
