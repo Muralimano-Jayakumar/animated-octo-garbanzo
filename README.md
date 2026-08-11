@@ -140,6 +140,10 @@ make network-security-validate
 
 Terraform assigns dedicated tokenless ServiceAccounts and a default-deny NetworkPolicy model with narrow ingress, DNS, and database exceptions. The [network-security guide](docs/network-security.md) documents each rule and the important kindnet enforcement limitation of the preserved local cluster.
 
+## Continuous integration
+
+Pull requests run application tests, Terraform validation, ShellCheck, Gitleaks, and container security scanning. The workflow has read-only permissions, immutable action references, explicit timeouts, and no deployment privileges. See the [continuous-integration guide](docs/continuous-integration.md) for local parity and branch-protection recommendations.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
