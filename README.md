@@ -144,6 +144,15 @@ Terraform assigns dedicated tokenless ServiceAccounts and a default-deny Network
 
 Pull requests run application tests, Terraform validation, ShellCheck, Gitleaks, and container security scanning. The workflow has read-only permissions, immutable action references, explicit timeouts, and no deployment privileges. See the [continuous-integration guide](docs/continuous-integration.md) for local parity and branch-protection recommendations.
 
+## Observe the platform
+
+```bash
+make observability-install
+make observability-validate
+```
+
+The application exports Prometheus request, latency, error, and transfer metrics. A pinned local kube-prometheus-stack installation provides Prometheus, Grafana, Kubernetes metrics, a Muma Bank dashboard, and availability/error alerts. See the [observability guide](docs/observability.md).
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).

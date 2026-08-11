@@ -71,6 +71,45 @@ resource "kubernetes_network_policy_v1" "application_ingress" {
   }
 }
 
+resource "kubernetes_network_policy_v1" "prometheus_ingress" {
+  metadata {
+    name      = "allow-prometheus-to-application"
+    namespace = kubernetes_namespace_v1.application.metadata[0].name
+    labels    = local.common_labels
+  }
+
+  spec {
+    pod_selector {
+      match_labels = {
+        "app.kubernetes.io/name"      = local.application_name
+        "app.kubernetes.io/instance"  = "local"
+        "app.kubernetes.io/component" = "api"
+      }
+    }
+    policy_types = ["Ingress"]
+
+    ingress {
+      from {
+        namespace_selector {
+          match_labels = {
+            "kubernetes.io/metadata.name" = "monitoring"
+          }
+        }
+        pod_selector {
+          match_labels = {
+            "app.kubernetes.io/name" = "prometheus"
+          }
+        }
+      }
+
+      ports {
+        port     = "http"
+        protocol = "TCP"
+      }
+    }
+  }
+}
+
 resource "kubernetes_network_policy_v1" "application_dns" {
   metadata {
     name      = "allow-application-dns"

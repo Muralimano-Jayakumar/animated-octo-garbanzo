@@ -81,4 +81,5 @@ def create_transfer():
         raise InvalidTransferError("Transfer amount must have at most two decimal places")
 
     result = _repository().transfer(source_id, destination_id, amount)
+    current_app.extensions["application_metrics"].transfers.inc()
     return jsonify({"transfer": result}), 201
