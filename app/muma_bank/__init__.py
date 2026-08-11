@@ -10,6 +10,7 @@ from flask import Flask
 
 from muma_bank.database import PostgresAccountRepository
 from muma_bank.errors import register_error_handlers
+from muma_bank.metrics import ApplicationMetrics
 from muma_bank.repository import AccountRepository, AccountStore
 from muma_bank.routes import api
 
@@ -38,6 +39,7 @@ def create_app(
             repository = AccountRepository.with_demo_data()
 
     app.extensions["account_repository"] = repository
+    ApplicationMetrics().init_app(app)
     app.register_blueprint(api)
     register_error_handlers(app)
     return app

@@ -45,6 +45,27 @@ def test_response_contains_supplied_request_id(client):
     assert response.headers["X-Request-ID"] == "request-123"
 
 
+def test_metrics_report_requests_and_transfers(client):
+    client.get("/healthz")
+    client.post(
+        "/api/v1/transfers",
+        json={
+            "source_account_id": "ACC-1001",
+            "destination_account_id": "ACC-1002",
+            "amount": "1.00",
+        },
+    )
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert b'muma_bank_http_requests_total{endpoint="api.health"' in response.data
+    assert b"muma_bank_transfers_total 1.0" in response.data
+
+
+def test_metrics_are_not_exposed_through_ingress(client):
+    response = client.get("/metrics", headers={"X-Forwarded-For": "127.0.0.1"})
+    assert response.status_code == 404
+
+
 def test_lists_seeded_accounts(client):
     response = client.get("/api/v1/accounts")
     assert response.status_code == 200

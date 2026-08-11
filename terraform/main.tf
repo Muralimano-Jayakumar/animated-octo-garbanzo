@@ -22,7 +22,7 @@ resource "kubernetes_config_map_v1" "application" {
   data = {
     APP_ENV          = "local"
     GUNICORN_THREADS = "2"
-    GUNICORN_WORKERS = "2"
+    GUNICORN_WORKERS = "1"
     PORT             = "8080"
   }
 }

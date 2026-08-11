@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: muma-bank
+  namespace: monitoring
+  labels:
+    release: observability
+spec:
+  groups:
+    - name: muma-bank.availability
+      rules:
+        - alert: MumaBankUnavailable
+          expr: up{job="muma-bank"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Muma Bank metrics target is unavailable
+            description: Prometheus has been unable to scrape Muma Bank for two minutes.
+        - alert: MumaBankServerErrors
+          expr: sum(rate(muma_bank_http_requests_total{status=~"5.."}[5m])) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: Muma Bank is returning server errors
+            description: At least one HTTP 5xx response per second has been observed over five minutes.

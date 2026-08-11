@@ -8,8 +8,8 @@ kubectl --namespace "${NAMESPACE}" rollout status deployment/muma-bank --timeout
 kubectl --namespace "${NAMESPACE}" rollout status statefulset/muma-bank-postgres --timeout=180s
 
 policy_count="$(kubectl --namespace "${NAMESPACE}" get networkpolicy --no-headers | wc -l | tr -d ' ')"
-if [[ "${policy_count}" != "5" ]]; then
-  printf 'Expected 5 NetworkPolicies, found %s.\n' "${policy_count}" >&2
+if [[ "${policy_count}" != "6" ]]; then
+  printf 'Expected 6 NetworkPolicies, found %s.\n' "${policy_count}" >&2
   exit 1
 fi
 
