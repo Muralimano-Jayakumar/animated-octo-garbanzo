@@ -153,6 +153,17 @@ make observability-validate
 
 The application exports Prometheus request, latency, error, and transfer metrics. A pinned local kube-prometheus-stack installation provides Prometheus, Grafana, Kubernetes metrics, a Muma Bank dashboard, and availability/error alerts. See the [observability guide](docs/observability.md).
 
+## Practice Kubernetes troubleshooting
+
+```bash
+make troubleshooting-apply
+make troubleshooting-validate
+make troubleshooting-recover
+CONFIRM_DELETE=muma-bank-labs make troubleshooting-cleanup
+```
+
+Four isolated labs cover image availability, readiness probes, DNS resolution, and persistent storage. The [troubleshooting runbook](docs/troubleshooting-labs.md) connects each symptom to evidence, root cause, recovery, and prevention.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).

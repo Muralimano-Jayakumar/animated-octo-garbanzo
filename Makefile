@@ -6,7 +6,7 @@ IMAGE ?= muma-bank:dev
 CONTAINER ?= muma-bank-local
 APP_PORT ?= 8080
 
-.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete ingress-install ingress-validate network-security-validate observability-install observability-validate terraform-fmt terraform-init terraform-validate terraform-plan check
+.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete ingress-install ingress-validate network-security-validate observability-install observability-validate troubleshooting-apply troubleshooting-validate troubleshooting-recover troubleshooting-cleanup terraform-fmt terraform-init terraform-validate terraform-plan check
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*## "; printf "Available targets:\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -73,6 +73,18 @@ observability-install: ## Install the pinned local Prometheus and Grafana stack
 
 observability-validate: ## Validate Prometheus scraping, alerts, and Grafana health
 	@./scripts/observability-validate.sh
+
+troubleshooting-apply: ## Apply isolated broken scenarios in muma-bank-labs
+	@./scripts/troubleshooting-apply.sh
+
+troubleshooting-validate: ## Verify the expected failure symptoms
+	@./scripts/troubleshooting-validate.sh
+
+troubleshooting-recover: ## Apply recoveries and verify healthy resources
+	@./scripts/troubleshooting-recover.sh
+
+troubleshooting-cleanup: ## Delete labs only with CONFIRM_DELETE=muma-bank-labs
+	@CONFIRM_DELETE=$(CONFIRM_DELETE) ./scripts/troubleshooting-cleanup.sh
 
 terraform-fmt: ## Format Terraform configuration
 	@terraform -chdir=terraform fmt -recursive
