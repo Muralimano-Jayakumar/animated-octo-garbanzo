@@ -6,7 +6,7 @@ IMAGE ?= muma-bank:dev
 CONTAINER ?= muma-bank-local
 APP_PORT ?= 8080
 
-.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete ingress-install ingress-validate network-security-validate observability-install observability-validate troubleshooting-apply troubleshooting-validate troubleshooting-recover troubleshooting-cleanup terraform-fmt terraform-init terraform-validate terraform-plan check
+.PHONY: help preflight tool-versions app-install app-test app-run container-build container-scan container-run container-stop container-remove container-smoke cluster-create cluster-validate cluster-load-image cluster-delete ingress-install ingress-validate network-security-validate observability-install observability-validate troubleshooting-apply troubleshooting-validate troubleshooting-recover troubleshooting-cleanup terraform-fmt terraform-init terraform-validate terraform-plan docs-validate check
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*## "; printf "Available targets:\n"} /^[a-zA-Z_-]+:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -98,8 +98,12 @@ terraform-validate: ## Validate initialized Terraform configuration
 terraform-plan: ## Show the Kubernetes resource plan without applying it
 	@terraform -chdir=terraform plan
 
+docs-validate: ## Validate required documentation and local Markdown links
+	@./scripts/docs-validate.sh
+
 check: preflight ## Run safe repository validation
 	@git diff --check
 	@bash -n scripts/*.sh
 	@if command -v shellcheck >/dev/null 2>&1; then shellcheck scripts/*.sh; fi
+	@$(MAKE) --no-print-directory docs-validate
 	@echo "Bootstrap checks passed."

@@ -77,6 +77,9 @@ jobs:
       - name: Run ShellCheck
         run: shellcheck scripts/*.sh
 
+      - name: Validate documentation
+        run: make docs-validate
+
   secrets:
     name: Secret scanning
     runs-on: ubuntu-latest

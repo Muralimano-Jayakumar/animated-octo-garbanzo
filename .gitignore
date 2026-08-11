@@ -54,6 +54,7 @@ override.tf.json
 *_override.tf.json
 
 # Build and runtime artifacts
+backups/
 dist/
 build/
 *.log
