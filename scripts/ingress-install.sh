@@ -22,7 +22,7 @@ if ! kind get clusters | grep --fixed-strings --line-regexp --quiet "${CLUSTER_N
   exit 1
 fi
 
-kubectl apply --server-side --filename "${MANIFEST_URL}"
+kubectl apply --server-side --force-conflicts --filename "${MANIFEST_URL}"
 kubectl --namespace ingress-nginx patch deployment ingress-nginx-controller \
   --type merge \
   --patch '{"spec":{"template":{"spec":{"nodeSelector":{"ingress-ready":"true","kubernetes.io/os":"linux"}}}}}'

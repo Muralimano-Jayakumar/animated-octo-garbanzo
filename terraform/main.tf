@@ -114,6 +114,7 @@ resource "kubernetes_stateful_set_v1" "database" {
 
       spec {
         automount_service_account_token = false
+        service_account_name            = kubernetes_service_account_v1.database.metadata[0].name
 
         security_context {
           run_as_non_root = true
@@ -247,6 +248,7 @@ resource "kubernetes_deployment_v1" "application" {
 
       spec {
         automount_service_account_token = false
+        service_account_name            = kubernetes_service_account_v1.application.metadata[0].name
 
         security_context {
           run_as_non_root = true

@@ -131,6 +131,15 @@ make ingress-validate
 
 Open `http://muma-bank.localhost:8081`. The hostname resolves to loopback without an `/etc/hosts` change, and PostgreSQL remains internal. See the [ingress and local-networking guide](docs/ingress-local-networking.md) for the traffic path and troubleshooting commands.
 
+## Validate Kubernetes security controls
+
+```bash
+terraform -chdir=terraform apply
+make network-security-validate
+```
+
+Terraform assigns dedicated tokenless ServiceAccounts and a default-deny NetworkPolicy model with narrow ingress, DNS, and database exceptions. The [network-security guide](docs/network-security.md) documents each rule and the important kindnet enforcement limitation of the preserved local cluster.
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
