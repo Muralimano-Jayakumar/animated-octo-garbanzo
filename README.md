@@ -1,23 +1,25 @@
 # Muma Bank Kubernetes Platform
 
+**Status:** v1.0.0 release candidate
+
 A hands-on DevOps learning platform for building, containerizing, deploying, securing, observing, and troubleshooting a small banking application on a local multi-node Kubernetes environment.
 
 ## Status
 
-Phase 0 and Phase 1 establish the local workspace, development-tool preflight, repository standards, and GitHub workflow. No cluster or application workload is created during this bootstrap phase.
+The platform is feature-complete and preparing for its first stable release. Development progressed through focused issues and pull requests covering bootstrap, application engineering, containers, Kubernetes, Terraform, PostgreSQL, networking, security, CI, observability, troubleshooting, and documentation.
 
-## Planned architecture
+## Implemented architecture
 
-The project will evolve in feature branches and pull requests to include:
+The repository includes:
 
-- a Flask banking demo application;
-- container images and local image workflows;
+- a Flask banking application and responsive web interface;
+- a non-root container image and local image workflow;
 - a multi-node kind cluster running on Colima;
 - Terraform-managed Kubernetes resources;
 - PostgreSQL with persistent storage;
-- ingress, network policy, and security controls;
+- ingress, network-policy intent, and workload security controls;
 - CI validation and security scanning;
-- metrics, dashboards, and troubleshooting labs.
+- metrics, dashboards, runbooks, and troubleshooting labs.
 
 ## Repository layout
 
@@ -41,7 +43,7 @@ Run the read-only preflight to see which tools are available:
 make preflight
 ```
 
-The planned toolchain includes Git, GitHub CLI, Colima, Docker, kubectl, kind, Terraform, Helm, Gitleaks, ShellCheck, Hadolint, and Trivy.
+The toolchain includes Git, GitHub CLI, Colima, Docker, kubectl, kind, Terraform, Helm, Gitleaks, ShellCheck, Hadolint, and Trivy.
 
 See [Local development environment](docs/local-development.md) for reproducible Homebrew installation, validation commands, and runtime safety boundaries.
 
@@ -51,7 +53,7 @@ For a development machine with at least 16 GB of memory, a practical starting po
 
 ## Development workflow
 
-The initial bootstrap is committed to `main`. Subsequent work uses focused feature branches, Conventional Commits, validation before push, and pull requests back to `main`.
+Work uses focused feature branches, Conventional Commits, validation before push, and pull requests back to protected `main`.
 
 Never commit credentials, local environment files, Terraform state, private keys, or certificates. See `.gitignore` for protected patterns.
 
@@ -173,6 +175,10 @@ The [documentation index](docs/README.md) is the starting point for design, depl
 - [portfolio evidence](docs/portfolio-evidence.md), which maps engineering practices to repository artifacts
 
 Run `make docs-validate` to verify the required document set and all repository-local Markdown links.
+
+## Releases
+
+The repository follows Semantic Versioning. See the [changelog](CHANGELOG.md), [v1.0.0 release notes](docs/releases/v1.0.0.md), and guarded [release process](docs/release-process.md). `make release-validate` checks version alignment, required release artifacts, documentation links, and tracked-file safety before a tag is created.
 
 ## License
 
